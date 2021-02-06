@@ -12,7 +12,7 @@
 </head>
     <body class="antialiased">
       <div id="app">
-      <example-component></example-component>
+      <posts></posts>
       </div>
     </body>
     <script src="{{asset('./js/app.js')}}"></script>
