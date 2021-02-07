@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     public function index()
+    {   $post=Post::when(request('Category_id','')!='', function ($query)    
     {
-        return PostResource::collection(Post::paginate(3));
+        $query->where('Category_id',request('Category_id'));
+    })->paginate(3);
+        return PostResource::collection($post);
     }
 }

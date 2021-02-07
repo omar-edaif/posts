@@ -1871,22 +1871,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      posts: {}
+      posts: {},
+      categories: {},
+      category_id: ""
     };
   },
+  watch: {
+    category_id: function category_id(value) {
+      this.getResults();
+    }
+  },
   mounted: function mounted() {
-    this.getResults();
+    this.getCategories(), this.getResults();
   },
   methods: {
     getResults: function getResults() {
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get('/api/posts?page=' + page).then(function (response) {
+      var category = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.category_id;
+      axios.get('/api/posts?page=' + page + '&Category_id=' + category).then(function (response) {
         _this.posts = response.data;
+      });
+    },
+    getCategories: function getCategories() {
+      var _this2 = this;
+
+      axios.get('/api/categories').then(function (response) {
+        _this2.categories = response.data.data;
+        console.log(response.data.data);
       });
     }
   }
@@ -37941,6 +37961,50 @@ var render = function() {
     "div",
     { staticClass: "container" },
     [
+      _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.category_id,
+              expression: "category_id"
+            }
+          ],
+          staticClass: "custom-select mb-3",
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.category_id = $event.target.multiple
+                ? $$selectedVal
+                : $$selectedVal[0]
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { value: "" } }, [
+            _vm._v("--  Select Category  --")
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.categories, function(category) {
+            return _c(
+              "option",
+              { key: category.id, domProps: { value: category.id } },
+              [_vm._v(_vm._s(category.name))]
+            )
+          })
+        ],
+        2
+      ),
+      _vm._v(" "),
       _c("table", { staticClass: "table" }, [
         _vm._m(0),
         _vm._v(" "),
@@ -37956,7 +38020,7 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(post.created_at))]),
               _vm._v(" "),
-              _c("td")
+              _c("td", [_vm._v(_vm._s(post.category_id))])
             ])
           }),
           0
