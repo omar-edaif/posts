@@ -10,7 +10,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr v-for="post in posts" :key="post.id">
+    <tr v-for="post in posts.data" :key="post.id">
       <th scope="row">{{post.title}}</th>
       <td>{{ post.post_text}}</td>
       <td>{{post.created_at}}</td>
@@ -19,6 +19,8 @@
 
  </tbody>
 </table>
+
+<pagination :data="posts" @pagination-change-page="getResults"></pagination>
     </div>
 </template>
 
@@ -27,15 +29,21 @@
        
     data(){
         return{
-     posts:[]
+     posts:{ }
         }
     },
     mounted(){
-        axios.get('/api/posts').then(response=>{
-            this.posts=response.data
-            
-        }).then(console.log(this.posts))
-    }
+      this.getResults()
+   
+    },
+    methods:{
+        getResults(page=1){
+              axios.get('/api/posts?page='+page).then(response=>{
+              this.posts=response.data
+        })
+        }
+      } 
+    
     }
 </script>
 
