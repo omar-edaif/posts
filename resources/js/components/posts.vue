@@ -7,10 +7,24 @@
      <table class="table">
   <thead>
     <tr>
-      <th scope="col">title</th>
-      <th scope="col">dscription</th>
-      <th scope="col">create at</th>
-      <th scope="col">Actions</th>
+      <th scope="col">
+        <a  href="#" @click.prevent="changeSort('title')"> title</a >
+        <span v-if="sort_field === 'title' && sort_direction==='desc'"> &uarr; </span>
+        <span v-if="sort_field === 'title' && sort_direction==='asc'"> &darr; </span>
+        </th>
+      <th scope="col"> 
+       <a  href="#" @click.prevent="changeSort('post_text')"> discription</a >
+        <span v-if="sort_field === 'post_text' && sort_direction==='desc'"> &uarr; </span>
+        <span v-if="sort_field === 'post_text' && sort_direction==='asc'"> &darr; </span>
+        </th>
+      <th scope="col"> 
+       <a  href="#" @click.prevent="changeSort('created_at')"> created at</a >
+        <span v-if="sort_field === 'created_at' && sort_direction==='desc'"> &uarr; </span>
+        <span v-if="sort_field === 'created_at' && sort_direction==='asc'"> &darr; </span>
+        </th>
+      <th scope="col"> 
+        <a  href="#"> Actions</a >
+        </th>
     </tr>
   </thead>
   <tbody>
@@ -35,11 +49,14 @@
         return{
      posts:{ },
      categories:{},
-     category_id:""
+     category_id:'',
+     sort_field :'created_at',
+     sort_direction:'desc'
         }
     },
     watch:{
       category_id(value){ this.getResults() }
+      
       },
     mounted(){
       this.getCategories(),
@@ -49,17 +66,31 @@
     },
 
     methods:{
-        getResults(page=1,category=this.category_id){
-              axios.get('/api/posts?page='+page+'&Category_id='+category).then(response=>{
+        getResults(page=1,category=this.category_id,sortField=this.sort_field,sortDirection = this.sort_direction){
+              axios.get(
+                '/api/posts?page='+page+'&Category_id='+category
+                +'&sort_field='+sortField
+                +'&sort_direction='+sortDirection
+                ).then(response=>{
               this.posts=response.data
         })
         },
         getCategories(){
           axios.get('/api/categories').then(response=>{
               this.categories=response.data.data
-              console.log(response.data.data)
+          
 
           })
+        },
+        changeSort(sortField){
+         if(this.sort_field===sortField){
+           this.sort_direction = this.sort_direction==='asc'?'desc':'asc'
+         }
+         else{
+           this.sort_field=sortField
+           this.sort_direction = 'asc'
+         }
+         this.getResults()
         }
       } 
     

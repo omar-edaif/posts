@@ -1875,12 +1875,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       posts: {},
       categories: {},
-      category_id: ""
+      category_id: '',
+      sort_field: 'created_at',
+      sort_direction: 'desc'
     };
   },
   watch: {
@@ -1897,7 +1913,9 @@ __webpack_require__.r(__webpack_exports__);
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var category = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.category_id;
-      axios.get('/api/posts?page=' + page + '&Category_id=' + category).then(function (response) {
+      var sortField = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.sort_field;
+      var sortDirection = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : this.sort_direction;
+      axios.get('/api/posts?page=' + page + '&Category_id=' + category + '&sort_field=' + sortField + '&sort_direction=' + sortDirection).then(function (response) {
         _this.posts = response.data;
       });
     },
@@ -1906,8 +1924,17 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/api/categories').then(function (response) {
         _this2.categories = response.data.data;
-        console.log(response.data.data);
       });
+    },
+    changeSort: function changeSort(sortField) {
+      if (this.sort_field === sortField) {
+        this.sort_direction = this.sort_direction === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sort_field = sortField;
+        this.sort_direction = 'asc';
+      }
+
+      this.getResults();
     }
   }
 });
@@ -38006,7 +38033,83 @@ var render = function() {
       ),
       _vm._v(" "),
       _c("table", { staticClass: "table" }, [
-        _vm._m(0),
+        _c("thead", [
+          _c("tr", [
+            _c("th", { attrs: { scope: "col" } }, [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.changeSort("title")
+                    }
+                  }
+                },
+                [_vm._v(" title")]
+              ),
+              _vm._v(" "),
+              _vm.sort_field === "title" && _vm.sort_direction === "desc"
+                ? _c("span", [_vm._v(" ↑ ")])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.sort_field === "title" && _vm.sort_direction === "asc"
+                ? _c("span", [_vm._v(" ↓ ")])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("th", { attrs: { scope: "col" } }, [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.changeSort("post_text")
+                    }
+                  }
+                },
+                [_vm._v(" discription")]
+              ),
+              _vm._v(" "),
+              _vm.sort_field === "post_text" && _vm.sort_direction === "desc"
+                ? _c("span", [_vm._v(" ↑ ")])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.sort_field === "post_text" && _vm.sort_direction === "asc"
+                ? _c("span", [_vm._v(" ↓ ")])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("th", { attrs: { scope: "col" } }, [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.changeSort("created_at")
+                    }
+                  }
+                },
+                [_vm._v(" created at")]
+              ),
+              _vm._v(" "),
+              _vm.sort_field === "created_at" && _vm.sort_direction === "desc"
+                ? _c("span", [_vm._v(" ↑ ")])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.sort_field === "created_at" && _vm.sort_direction === "asc"
+                ? _c("span", [_vm._v(" ↓ ")])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ])
+        ]),
         _vm._v(" "),
         _c(
           "tbody",
@@ -38040,16 +38143,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("title")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("dscription")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("create at")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
-      ])
+    return _c("th", { attrs: { scope: "col" } }, [
+      _c("a", { attrs: { href: "#" } }, [_vm._v(" Actions")])
     ])
   }
 ]
