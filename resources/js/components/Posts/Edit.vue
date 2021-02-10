@@ -1,5 +1,6 @@
 <template>
     <div>
+        
  <form action="" @submit.prevent="submitForm">
      Post title :
      <br class="my-3">
@@ -24,8 +25,9 @@
      <div class="alert alert-danger" v-if="errors.Category_id">{{errors.Category_id[0]}}</div>
 
      <br><br>
-     <br><input type="submit" class="btn btn-primary float-float-right" 
-     :value="formSubmiting?'submiting...':'create post'"
+     <br>
+     <input type="submit" class="btn btn-secondary float-float-right" 
+     :value="formSubmiting?'submiting...':'update post'"
      :disabled="formSubmiting" >
 
 
@@ -52,8 +54,13 @@
         },
         mounted(){
          this.getCategories()
+         this.getFields()
         },
         methods:{
+             getFields(){
+                axios.get('/api/posts/'+this.$route.params.id).then(response=>{
+                    this.fields=response.data.data
+                })},
               getCategories(){
                 axios.get('/api/categories').then(response=>{
                     this.categories=response.data.data
@@ -61,15 +68,15 @@
               },
               submitForm(){
                   this.formSubmiting=true
-                    axios.post('/api/posts',this.fields).then(response=>{
-                     router.push({name:'posts_indeex'})
+                    axios.put('/api/posts/'+this.$route.params.id,this.fields).then(response=>{
+                     router.push('/posts')
                     this.formSubmiting=false
                     }).catch(error=>{
                          if(error.response.status===422){
                             this.errors=error.response.data.errors
-                            this.formSubmiting=false
                             }
-                     })
+                            this.formSubmiting=false
+                    })
               }
         }
     }

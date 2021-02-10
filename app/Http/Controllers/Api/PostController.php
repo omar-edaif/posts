@@ -5,6 +5,7 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\PostResource;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -29,5 +30,13 @@ class PostController extends Controller
     public function Store(StorePostRequest $request){
         $post = Post::create($request->validated());
         return new PostResource($post);
+    }
+    public function show(Post $post){
+        return new PostResource( $post);
+    }
+    public function update(Post $post,StorePostRequest $request){
+        $post->update($request->validated());
+        return new PostResource( $post);
+        
     }
 }

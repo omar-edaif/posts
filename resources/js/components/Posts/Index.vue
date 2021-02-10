@@ -32,7 +32,7 @@
       <th scope="row">{{post.title}}</th>
       <td>{{ post.post_text}}</td>
       <td>{{post.created_at}}</td>
-      <td>{{post.category_id}}</td>
+      <td><router-link :to="{name :'posts_edit',params:{id:post.id}}"> edit</router-link> </td>
     </tr>
 
  </tbody>
