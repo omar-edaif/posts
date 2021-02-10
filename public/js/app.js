@@ -1918,6 +1918,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1927,7 +1932,8 @@ __webpack_require__.r(__webpack_exports__);
         title: "",
         post_text: "",
         Category_id: ""
-      }
+      },
+      errors: {}
     };
   },
   mounted: function mounted() {
@@ -1942,9 +1948,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     submitForm: function submitForm() {
+      var _this2 = this;
+
       axios.post('/api/posts', this.fields).then(function (response) {
         _router__WEBPACK_IMPORTED_MODULE_0__.default.push('/');
-        console.log(response.status);
+      })["catch"](function (error) {
+        if (error.response.status === 422) {
+          _this2.errors = error.response.data.errors;
+        }
       });
     }
   }
@@ -38861,6 +38872,12 @@ var render = function() {
           }
         }),
         _vm._v(" "),
+        _vm.errors.title
+          ? _c("div", { staticClass: "alert alert-danger" }, [
+              _vm._v(_vm._s(_vm.errors.title[0]))
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c("br", {}),
         _vm._v("\n    Post text :\n   "),
         _c("br", { staticClass: "my-3" }),
@@ -38886,6 +38903,12 @@ var render = function() {
             }
           }
         }),
+        _vm._v(" "),
+        _vm.errors.post_text
+          ? _c("div", { staticClass: "alert alert-danger" }, [
+              _vm._v(_vm._s(_vm.errors.post_text[0]))
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("br", {}),
         _vm._v("\n    Category :\n    "),
@@ -38936,6 +38959,12 @@ var render = function() {
           ],
           2
         ),
+        _vm._v(" "),
+        _vm.errors.Category_id
+          ? _c("div", { staticClass: "alert alert-danger" }, [
+              _vm._v(_vm._s(_vm.errors.Category_id[0]))
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("br"),
         _c("br"),
