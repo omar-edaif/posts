@@ -24,7 +24,10 @@
      <div class="alert alert-danger" v-if="errors.Category_id">{{errors.Category_id[0]}}</div>
 
      <br><br>
-     <br><input type="submit" class="btn btn-primary float-float-right" value="Save post">
+     <br><input type="submit" class="btn btn-primary float-float-right" 
+     :value="formSubmiting?'submiting...':'create post'"
+     :disabled="formSubmiting" >
+
 
  </form>
     </div>
@@ -42,7 +45,8 @@
                     post_text:"",
                     Category_id:""
                  },
-                errors:{}
+                errors:{},
+                formSubmiting:false
 
             }
         },
@@ -56,14 +60,15 @@
                 })
               },
               submitForm(){
+                  this.formSubmiting=true
                     axios.post('/api/posts',this.fields).then(response=>{
                      router.push('/')
-                     }).catch(error=>{
+                    this.formSubmiting=false
+                    }).catch(error=>{
                          if(error.response.status===422){
-                             this.errors=error.response.data.errors
-                             
-                      
-                         }
+                            this.errors=error.response.data.errors
+                            this.formSubmiting=false
+                            }
                      })
               }
         }

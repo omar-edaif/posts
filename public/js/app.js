@@ -1923,6 +1923,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1933,7 +1936,8 @@ __webpack_require__.r(__webpack_exports__);
         post_text: "",
         Category_id: ""
       },
-      errors: {}
+      errors: {},
+      formSubmiting: false
     };
   },
   mounted: function mounted() {
@@ -1950,11 +1954,14 @@ __webpack_require__.r(__webpack_exports__);
     submitForm: function submitForm() {
       var _this2 = this;
 
+      this.formSubmiting = true;
       axios.post('/api/posts', this.fields).then(function (response) {
         _router__WEBPACK_IMPORTED_MODULE_0__.default.push('/');
+        _this2.formSubmiting = false;
       })["catch"](function (error) {
         if (error.response.status === 422) {
           _this2.errors = error.response.data.errors;
+          _this2.formSubmiting = false;
         }
       });
     }
@@ -38972,7 +38979,10 @@ var render = function() {
         _c("br"),
         _c("input", {
           staticClass: "btn btn-primary float-float-right",
-          attrs: { type: "submit", value: "Save post" }
+          attrs: { type: "submit", disabled: _vm.formSubmiting },
+          domProps: {
+            value: _vm.formSubmiting ? "submiting..." : "create post"
+          }
         })
       ]
     )
