@@ -10,11 +10,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">              
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <router-link to="/" class="nav-link">Posts List</router-link>  
+                        <router-link exact :to="{ name:'posts_index'}" class="nav-link">Posts List</router-link>  
                     </li>
                 
                     <li class="nav-item">
-                        <router-link to="/posts/create" class="nav-link">Add new posts </router-link>  
+                        <router-link exact :to="{ name:'posts_create'}" class="nav-link">Add new posts </router-link>  
                     </li>
                 </ul>
             </div>
@@ -35,5 +35,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+.router-link-active{
+  font-weight: bold;
+}
 </style>

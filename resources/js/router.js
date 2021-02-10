@@ -7,11 +7,13 @@ export default new VueRouter({
  routes:[
      {
          path:'/',
-         component:PostsIndex
+         component:PostsIndex,
+         name:'posts_index'
      },
      {
         path:'/create',
-        component:PostsCreate
+        component:PostsCreate,
+        name:'posts_create'
 
      },
      

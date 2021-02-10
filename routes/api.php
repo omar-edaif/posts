@@ -20,5 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('posts',[PostController::class,'index']);
+// Route::get('posts',[PostController::class,'index']);
+Route::apiResource('posts',PostController::class,['index','store']);
 Route::get('categories',[CategoryController::class,'index']);
