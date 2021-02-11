@@ -62,7 +62,7 @@
               submitForm(){
                   this.formSubmiting=true
                     axios.post('/api/posts',this.fields).then(response=>{
-                     router.push({name:'posts_indeex'})
+                     router.push({name:'posts_index'})
                     this.formSubmiting=false
                     }).catch(error=>{
                          if(error.response.status===422){

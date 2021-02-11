@@ -32,7 +32,10 @@
       <th scope="row">{{post.title}}</th>
       <td>{{ post.post_text}}</td>
       <td>{{post.created_at}}</td>
-      <td><router-link :to="{name :'posts_edit',params:{id:post.id}}"> edit</router-link> </td>
+      <td>
+        <router-link class="btn btn-info btn-sm" :to="{name :'posts_edit',params:{id:post.id}}"> edit</router-link> 
+        <button class="btn btn-danger btn-sm" @click="deletePost(post.id)">Delete</button>
+        </td>
     </tr>
 
  </tbody>
@@ -91,6 +94,39 @@
            this.sort_direction = 'asc'
          }
          this.getResults()
+        },
+        deletePost(post_id){
+                 this.$swal.fire({
+                              title: 'Are you sure?',
+                              text: "You won't be able to revert this!",
+                              icon: 'warning',
+                              showCancelButton: true,
+                              confirmButtonText: 'Yes, delete it!',
+                              cancelButtonText: 'No, cancel!',
+                              reverseButtons: true
+                            }).then((result) => {
+                              console.log(result)
+                              if (result.isConfirmed) {
+                                console.log(result)
+                                axios.delete('/api/posts/'+post_id).then(response=>{
+                                this.$swal.fire(
+                                  'Deleted!',
+                                  ' posts has been deleted.',
+                                  'success',
+                                  
+                                )
+                                this.getResults();
+                              })
+                                
+                              } if(result.isDismissed===true) {
+                                this.$swal.fire(
+                                  'Cancelled',
+                                  'Your imaginary file is safe :)',
+                                  'error',
+                                  
+                                )
+                              }
+                            })
         }
       } 
     
