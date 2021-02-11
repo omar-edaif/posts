@@ -69,8 +69,15 @@
               submitForm(){
                   this.formSubmiting=true
                     axios.put('/api/posts/'+this.$route.params.id,this.fields).then(response=>{
+                        this.$swal.fire({
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Your work has been saved',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                    })
                      router.push({name:'posts_index'})
-                    this.formSubmiting=false
+                     this.formSubmiting=false
                     }).catch(error=>{
                          if(error.response.status===422){
                             this.errors=error.response.data.errors

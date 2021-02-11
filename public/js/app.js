@@ -1956,6 +1956,14 @@ __webpack_require__.r(__webpack_exports__);
 
       this.formSubmiting = true;
       axios.post('/api/posts', this.fields).then(function (response) {
+        _this2.$swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        });
+
         _router__WEBPACK_IMPORTED_MODULE_0__.default.push({
           name: 'posts_index'
         });
@@ -2059,6 +2067,14 @@ __webpack_require__.r(__webpack_exports__);
 
       this.formSubmiting = true;
       axios.put('/api/posts/' + this.$route.params.id, this.fields).then(function (response) {
+        _this3.$swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: false,
+          timer: 1500
+        });
+
         _router__WEBPACK_IMPORTED_MODULE_0__.default.push({
           name: 'posts_index'
         });
